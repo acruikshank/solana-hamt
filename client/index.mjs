@@ -58,13 +58,12 @@ const initHAMT = async () => {
  * @param value numeric value to store
  */
 const setValue = async (hamt, key, value) => {
-  let txSig = await _setValue(new PublicKey(hamt), key, value)
+  let sendResult = await _setValue(new PublicKey(hamt), key, value)
   
-  console.log("Transaction:", txSig)  
+  console.log("Transaction:", sendResult.txSignature)  
 
-  await connection.confirmTransaction(txSig)
-  const result = await connection.getTransaction(txSig, {commitment: 'confirmed'})
-  console.log(result.txSignature)
+  await connection.confirmTransaction(sendResult.txSignature)
+  const result = await connection.getTransaction(sendResult.txSignature, {commitment: 'confirmed'})
 
   // for await (let nodeKey of fullPath) await dumpNode(connection, nodeKey);
 
